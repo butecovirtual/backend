@@ -1,0 +1,24 @@
+{
+  "name": "butecovirtual-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/butecovirtual/server.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/butecovirtual/server/issues"
+  },
+  "homepage": "https://github.com/butecovirtual/server#readme",
+  "dependencies": {
+    "moment-timezone": "^0.5.28",
+    "restify": "^8.5.1"
+  }
+}
