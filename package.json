@@ -19,6 +19,7 @@
   "homepage": "https://github.com/butecovirtual/server#readme",
   "dependencies": {
     "moment-timezone": "^0.5.28",
-    "restify": "^8.5.1"
+    "restify": "^8.5.1",
+    "twilio": "^3.42.2"
   }
 }

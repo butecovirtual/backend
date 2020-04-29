@@ -4,6 +4,10 @@ const path = require('path');
 const PORT = process.env.PORT || 3000;
 
 global.package = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json')).toString());
+global.twilio = new (require('twilio'))(
+    'AC62775c48d6bd5ac575eaed4d280c1f4d',
+    process.env.TWILIO_TOKEN
+);
 
 const server = restify.createServer({
     name: package.name,
