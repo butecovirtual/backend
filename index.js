@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const restify = require('restify');
 const fs = require('fs');
 const path = require('path');
