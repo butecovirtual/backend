@@ -24,6 +24,7 @@
     "jsonwebtoken": "^8.5.1",
     "moment-timezone": "^0.5.28",
     "mongoose": "^5.9.10",
+    "node-media-server": "^2.1.8",
     "randomstring": "^1.1.5",
     "restify": "^8.5.1",
     "restify-errors": "^8.0.2",

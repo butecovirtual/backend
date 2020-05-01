@@ -7,7 +7,8 @@ const path = require('path');
 const PORT = process.env.PORT || 3000;
 
 global.package = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json')).toString());
-global.twilio = new (require('twilio'))(process.env.TWILIO_ACSID, process.env.TWILIO_TOKEN);
+
+require('./nms').start();
 
 const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI, { 
