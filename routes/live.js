@@ -14,4 +14,9 @@ module.exports = function(server) {
         live.get
     );
 
+    server.get(
+        '/lives',
+        live.all
+    );
+
 }
