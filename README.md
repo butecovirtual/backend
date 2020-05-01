@@ -1,1 +1,15 @@
-# backend
+# Buteco Virtual - servidor
+
+Antes de iniciar o servidor, crie um arquivo .env na raiz do projeto para definir as variáveis de ambiente necessárias
+```
+# MongoDB
+MONGODB_URI=mongodb://...
+
+# Jwt Secret
+JWT_SECRET=...
+
+# Twilio
+TWILIO_ACSID=...
+TWILIO_TOKEN=...
+TWILIO_SMSID=...
+```

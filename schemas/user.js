@@ -53,5 +53,26 @@ module.exports = {
                 token: "O token de 4 dígitos deverá ser informado como string."
             }
         }
+    },
+
+    "put /user/artist": {
+        type: "object",
+        required: ["name", "genre"],
+        properties: {
+            name: { type: "string" },
+            genre: { type: "string" },
+            bio: { type: "string" },
+            instagram: { type: "string" },
+            youtube: { type: "string" },
+            facebook: { type: "string" },
+            spotify: { type: "string" }
+        },
+        errorMessage: {
+            type: "A requisição deve ser um objeto JSON válido.",
+            required: {
+                name: "O nome do artista deverá ser obrigatoriamente informado.",
+                genre: "O gênero musical do artista deverá ser informado."
+            }
+        }
     }
 };

@@ -43,6 +43,19 @@ module.exports.register = async (req, res, next) => {
     });
 }
 
+module.exports.get = async (req, res, next) => {
+    var user = await User.findById(req.user.uid);
+    if (!user)
+        return next(new errors.NotFoundError(msg.USERNAME_NOT_FOUND));
+
+    res.send({
+        username: user.username,
+        mobile: user.mobile,
+        artist: user.artist
+    });
+    return next();
+}
+
 module.exports.token = async (req, res, next) => {
     var user = await User.findByUsername(req.params.username);
     if (!user)
@@ -66,6 +79,16 @@ module.exports.authenticate = async (req, res, next) => {
             exp: exp,
             token: token
         });
+        return next();
+    });
+}
+
+module.exports.artist = async (req, res, next) => {
+    User.findByIdAndUpdate(req.user.uid, { artist: req.params }, (err) => {
+        if (err)
+            return next(new errors.InternalServerError(msg.ERR_UNKNOWN));
+
+        res.send(200);
         return next();
     });
 }

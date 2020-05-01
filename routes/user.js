@@ -10,6 +10,11 @@ module.exports = function(server) {
     );
 
     server.get(
+        '/user',
+        user.get
+    );
+
+    server.get(
         '/user/token/:username',
         user.token
     );
@@ -20,4 +25,9 @@ module.exports = function(server) {
         user.authenticate
     );
     
+    server.put(
+        '/user/artist',
+        schema.validate,
+        user.artist
+    );
 }
