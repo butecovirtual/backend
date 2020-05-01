@@ -14,6 +14,7 @@ module.exports.new = async (req, res, next) => {
 
 var _liveToReturn = (live) => {
     return {
+        id: live._id,
         title: live.title,
         artist: {
             id: live.artist._id,
