@@ -13,6 +13,7 @@ module.exports.new = async (req, res, next) => {
 }
 
 var _liveToReturn = (live) => {
+    live.viewers.map((v) => { return { id: v._id, username: v.username }});
     return {
         id: live._id,
         title: live.title,
@@ -25,7 +26,8 @@ var _liveToReturn = (live) => {
         status: live.status,
         valueBase: live.valueBase,
         valueTable: live.valueTable,
-        sponsors: live.sponsors
+        sponsors: live.sponsors,
+        viewers: live.viewers || []
     }
 }
 
@@ -39,7 +41,7 @@ module.exports.get = async (req, res, next) => {
 }
 
 module.exports.all = async (req, res, next) => {
-    var lives = await Live.find().populate('artist');
+    var lives = await Live.find().populate('artist').populate('viewers', '_id username');
     res.send(lives.map((l) => _liveToReturn(l)));
     return next();
 }

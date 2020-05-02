@@ -12,7 +12,8 @@ var liveSchema = new Schema({
     status: { type: String, required: true, default: 'Agendada' },
     valueBase: { type: Number, required: true, default: 0, get: _getMoney, set: _setMoney },
     valueTable: { type: Number, required: true, default: 0, get: _getMoney, set: _setMoney },
-    sponsors: [String]
+    sponsors: [String],
+    viewers: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
 
 module.exports = mongoose.model('Live', liveSchema);

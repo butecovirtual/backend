@@ -9,7 +9,7 @@ var artistSchema = new Schema({
     youtube: String,
     facebook: String,
     spotify: String
-})
+});
 
 var userSchema = new Schema({
     username: { type: String, required: true, unique: true, lowercase: true, index: true },

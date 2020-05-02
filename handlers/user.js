@@ -49,6 +49,7 @@ module.exports.get = async (req, res, next) => {
         return next(new errors.NotFoundError(msg.USERNAME_NOT_FOUND));
 
     res.send({
+        id: user._id,
         username: user.username,
         mobile: user.mobile,
         artist: user.artist

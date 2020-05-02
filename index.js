@@ -20,10 +20,9 @@ mongoose.connect(process.env.MONGODB_URI, {
     if (err) console.log(`MongoDB connection error ${err}`);
 });
 
-const server = restify.createServer({
-    name: package.name,
-    version: package.version
-});
+const server = restify.createServer();
+const io = require('socket.io').listen(server.server);
+require('./handlers/chat')(io);
 
 server.use(restify.plugins.jsonBodyParser({ mapParams: true }));
 server.use(restify.plugins.acceptParser(server.acceptable));
