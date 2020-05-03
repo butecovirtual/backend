@@ -59,9 +59,7 @@ module.exports = (io) => {
             });
         });
 
-        socket.on('live-join', async (data) => {
-            const { liveId, userId } = data;
-
+        socket.on('live-join', async ({ liveId, userId }) => {
             connectedUserId = userId;
 
             socket.join(liveId);
@@ -78,17 +76,13 @@ module.exports = (io) => {
             });
         });
 
-        socket.on('live-leave', (data) => {
-            const { liveId, userId } = data;
-
+        socket.on('live-leave', ({ liveId, userId }) => {
             var i = -1;
             if ((i = _.findIndex(viewers, {liveId, userId})) >= 0)
                 _delUserFromLive(connectedUserId, viewers.splice(i, 1)[0].liveId);
         });
 
-        socket.on('message', async (data) => {
-            const { liveId, userId, message } = data;
-
+        socket.on('message', async ({ liveId, userId, message }) => {
             var user = await User.findById(userId);
             if (!user) return;  /* discard the message */
 
@@ -101,9 +95,7 @@ module.exports = (io) => {
             });
         });
 
-        socket.on('react', async (data) => {
-            const { liveId, userId, reaction } = data;
-
+        socket.on('react', async ({ liveId, userId, reaction }) => {
             var user = await User.findById(userId);
             if (!user) return;  /* discard the message */
 
