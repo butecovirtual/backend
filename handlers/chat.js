@@ -25,18 +25,18 @@ module.exports = (io) => {
                 liveId: liveId,
                 userId: userId
             });
-            io.sockets.in(liveId).emit('viewers', _viewersInLive(liveId));
+            io.sockets.in(liveId).emit('live-viewers', _viewersInLive(liveId));
         }
     
         var _delUserFromLive = async (userId, liveId) => {
             const user = await User.findById(userId);
-            io.sockets.in(liveId).emit('leave', {
+            io.sockets.in(liveId).emit('live-leave', {
                 user: {
                     id: user._id,
                     username: user.username
                 }
             });
-            io.sockets.in(liveId).emit('viewers', _viewersInLive(liveId));
+            io.sockets.in(liveId).emit('live-viewers', _viewersInLive(liveId));
         }
 
         socket.on('disconnect', () => {
@@ -45,7 +45,21 @@ module.exports = (io) => {
                 _delUserFromLive(connectedUserId, viewers.splice(i, 1)[0].liveId);
         });
 
-        socket.on('join', (data) => {
+        socket.on('live-start', ({ liveId }) => {
+            Live.findByIdAndUpdate(liveId, { status: 'Ao Vivo' }, (err) => {
+                if (err) console.log(`live-start err ${err}`);
+            });
+        });
+
+        socket.on('live-end', ({ liveId }) => {
+            Live.findByIdAndUpdate(liveId, { status: 'Encerrada' }, (err) => {
+                if (err) console.log(`live-end err ${err}`);
+
+                socket.broadcast.to(liveId).emit('live-end');
+            });
+        });
+
+        socket.on('live-join', async (data) => {
             const { liveId, userId } = data;
 
             connectedUserId = userId;
@@ -53,10 +67,18 @@ module.exports = (io) => {
             socket.join(liveId);
             _addViewerToLive(userId, liveId);
 
-            socket.broadcast.to(liveId).emit('join', { userId: userId });
+            var user = await User.findById(userId);
+            if (!user) return;  /* discard the message */
+
+            socket.broadcast.to(liveId).emit('live-join', { 
+                user: { 
+                    id: user._id, 
+                    username: user.username 
+                } 
+            });
         });
 
-        socket.on('leave', (data) => {
+        socket.on('live-leave', (data) => {
             const { liveId, userId } = data;
 
             var i = -1;
@@ -77,7 +99,22 @@ module.exports = (io) => {
                 },
                 message
             });
-        })
+        });
+
+        socket.on('react', async (data) => {
+            const { liveId, userId, reaction } = data;
+
+            var user = await User.findById(userId);
+            if (!user) return;  /* discard the message */
+
+            socket.broadcast.to(liveId).emit('react', {
+                user: {
+                    id: user._id,
+                    username: user.username
+                },
+                reaction
+            });
+        });
     });
 
 }
