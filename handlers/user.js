@@ -58,6 +58,7 @@ module.exports.get = async (req, res, next) => {
 }
 
 module.exports.token = async (req, res, next) => {
+    console.log(`/user/token/${req.params.username}`);
     var user = await User.findByUsername(req.params.username);
     if (!user)
         return next(new errors.NotFoundError(msg.USERNAME_NOT_FOUND));
