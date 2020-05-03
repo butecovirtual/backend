@@ -83,6 +83,8 @@ module.exports = (io) => {
         socket.on('live-leave', ({ liveId, userId }) => {
             console.log(`live-leave liveId: ${liveId} | ${userId}`);
 
+            socket.leave(liveId);
+
             var i = -1;
             if ((i = _.findIndex(viewers, {liveId, userId})) >= 0)
                 _delUserFromLive(connectedUserId, viewers.splice(i, 1)[0].liveId);
