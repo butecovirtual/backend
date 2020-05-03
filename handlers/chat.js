@@ -25,6 +25,7 @@ module.exports = (io) => {
                 liveId: liveId,
                 userId: userId
             });
+            console.log(`live-viewers ${_viewersInLive(liveId)}`);
             io.sockets.in(liveId).emit('live-viewers', _viewersInLive(liveId));
         }
     
@@ -36,6 +37,7 @@ module.exports = (io) => {
                     username: user.username
                 }
             });
+            console.log(`live-viewers ${_viewersInLive(liveId)}`);
             io.sockets.in(liveId).emit('live-viewers', _viewersInLive(liveId));
         }
 
@@ -60,6 +62,8 @@ module.exports = (io) => {
         });
 
         socket.on('live-join', async ({ liveId, userId }) => {
+            console.log(`live-join liveId: ${liveId} | ${userId}`);
+
             connectedUserId = userId;
 
             socket.join(liveId);
@@ -77,6 +81,8 @@ module.exports = (io) => {
         });
 
         socket.on('live-leave', ({ liveId, userId }) => {
+            console.log(`live-leave liveId: ${liveId} | ${userId}`);
+
             var i = -1;
             if ((i = _.findIndex(viewers, {liveId, userId})) >= 0)
                 _delUserFromLive(connectedUserId, viewers.splice(i, 1)[0].liveId);
