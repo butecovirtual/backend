@@ -1,6 +1,7 @@
 const errors = require('restify-errors');
 const msg = require('../messages');
 const Live = require('../models/Live');
+const User = require('../models/User');
 
 module.exports.new = async (req, res, next) => {
     new Live(Object.assign(req.params, { artist: req.user.uid })).save((err, live) => {
@@ -20,7 +21,8 @@ var _liveToReturn = (live) => {
         artist: {
             id: live.artist._id,
             username: live.artist.username,
-            mobile: live.artist.mobile
+            mobile: live.artist.mobile,
+            artist: live.artist.artist || { }
         },
         when: live.when,
         status: live.status,
@@ -41,13 +43,16 @@ module.exports.get = async (req, res, next) => {
 }
 
 module.exports.all = async (req, res, next) => {
-    var where = {};
+    var where = {
+        when: {$gte: new Date().toISOString().split('T')[0]}
+    };
     if (req.params.artist) where.artist = req.params.artist;
+    if (req.params.status) where.status = req.params.status;
 
     var lives = await Live.find(where)
-        .sort('-createdAt')
         .populate('artist')
-        .populate('viewers', '_id username');
+        .populate('viewers', '_id username')
+        .sort('-createdAt');
         
     res.send(lives.map((l) => _liveToReturn(l)));
     return next();
