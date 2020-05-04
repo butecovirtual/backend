@@ -12,7 +12,7 @@ module.exports = (io) => {
             return io.sockets.adapter.rooms[id] && io.sockets.adapter.rooms[id].length || 0;
         }
     
-        var _addViewerToLive = (userId, liveId) => {
+        var _addViewerToLive = (socket, userId, liveId) => {
             Live.findById(liveId, (err, live) => {
                 if (!live.viewers) live.viewers = [];
                 if (!live.viewers.includes(userId)){
@@ -21,10 +21,16 @@ module.exports = (io) => {
                 }
             });
     
-            viewers.push({
-                liveId: liveId,
-                userId: userId
-            });
+            var i = -1;
+            if ((i = _.findIndex(viewers, {liveId, userId})) >= 0){
+                let s = viewers.splice(i, 1)[0].socket;
+                s.leave(liveId);
+                s.emit('live-end');
+            }
+
+            socket.join(liveId);
+            viewers.push({ socket, liveId, userId });
+
             console.log(`live-viewers ${_viewersInLive(liveId)}`);
             io.sockets.in(liveId).emit('live-viewers', _viewersInLive(liveId));
         }
@@ -43,7 +49,7 @@ module.exports = (io) => {
 
         socket.on('disconnect', () => {
             var i = -1;
-            while ((i = viewers.map(v => v.userId).indexOf(connectedUserId)) >= 0)
+            while ((i = _.findIndex(viewers, { socket, userId: connectedUserId })) >= 0)
                 _delUserFromLive(connectedUserId, viewers.splice(i, 1)[0].liveId);
         });
 
@@ -65,9 +71,7 @@ module.exports = (io) => {
             console.log(`live-join liveId: ${liveId} | ${userId}`);
 
             connectedUserId = userId;
-
-            socket.join(liveId);
-            _addViewerToLive(userId, liveId);
+            _addViewerToLive(socket, userId, liveId);
 
             var user = await User.findById(userId);
             if (!user) return;  /* discard the message */
