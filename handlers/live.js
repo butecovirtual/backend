@@ -44,7 +44,11 @@ module.exports.all = async (req, res, next) => {
     var where = {};
     if (req.params.artist) where.artist = req.params.artist;
 
-    var lives = await Live.find(where).populate('artist').populate('viewers', '_id username');
+    var lives = await Live.find(where)
+        .sort('-createdAt')
+        .populate('artist')
+        .populate('viewers', '_id username');
+        
     res.send(lives.map((l) => _liveToReturn(l)));
     return next();
 }
