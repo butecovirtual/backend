@@ -5,7 +5,7 @@ var _getMoney = (num) => (num / 100).toFixed(2);
 var _setMoney = (num) => (num * 100);
 
 var liveSchema = new Schema({
-    createdAt: { type: Date, required: true, default: new Date(), expires: 7*24*60*60 /* 7 days */ },
+    createdAt: { type: Date, required: true, default: Date.now, expires: 7*24*60*60 /* 7 days */ },
     artist: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     title: { type: String, required: true },
     when: { type: Date, required: true },

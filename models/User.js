@@ -13,7 +13,7 @@ var artistSchema = new Schema({
 
 var userSchema = new Schema({
     username: { type: String, required: true, unique: true, lowercase: true, index: true },
-    createdAt: { type: Date, required: true, default: new Date() },
+    createdAt: { type: Date, required: true, default: Date.now },
     mobile: { type: String, required: true },
     artist: artistSchema
 });
