@@ -22,7 +22,7 @@
     "ajv-errors": "^1.0.1",
     "dotenv": "^8.2.0",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "moment-timezone": "^0.5.28",
     "mongoose": "^5.9.10",
     "node-media-server": "^2.1.8",
