@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/butecovirtual/server#readme",
   "dependencies": {
-    "ajv": "^6.12.2",
+    "ajv": "^6.12.3",
     "ajv-errors": "^1.0.1",
     "dotenv": "^8.2.0",
     "jsonwebtoken": "^8.5.1",
